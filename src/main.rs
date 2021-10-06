@@ -1,27 +1,37 @@
-use iced::{Element, Sandbox, Settings, Text};
+use iced::{button, Button, Column, Container, Element, Sandbox, Settings, Text};
 
 pub fn main() -> iced::Result {
     Hello::run(Settings::default())
 }
 
-struct Hello;
+#[derive(Default)]
+struct Hello {
+    btn_on: button::State,
+}
+
+#[derive(Debug, Clone)]
+enum Message {
+    BtnClicked,
+}
 
 impl Sandbox for Hello {
-    type Message = ();
+    type Message = Message;
 
-    fn new() -> Hello {
-        Hello
+    fn new() -> Self {
+        Self::default()
     }
 
     fn title(&self) -> String {
-        String::from("A cool application")
+        String::from("BUTTON")
     }
 
     fn update(&mut self, _message: Self::Message) {
         // This application has no interactions
     }
 
-    fn view(&mut self) -> Element<Self::Message> {
-        Text::new("Hello, world!").into()
+    fn view(&mut self) -> Element<Message> {
+        let btn = Button::new(&mut self.btn_on, Text::new("hoge")).on_press(Message::BtnClicked);
+        let content = Column::new().push(btn);
+        Container::new(content).into()
     }
 }
